@@ -30,8 +30,6 @@ namespace FastRecipe.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-            return Ok();
         }
 
         [HttpDelete("{id}")]

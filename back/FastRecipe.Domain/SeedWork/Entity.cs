@@ -10,10 +10,5 @@ namespace FastRecipe.Domain.SeedWork
         [BsonRepresentation(BsonType.ObjectId)]
         [JsonIgnore]
         public string Id { get; set; }
-
-        protected Entity(string id)
-        {
-            Id = id;
-        }
     }
 }
