@@ -11,9 +11,13 @@ namespace FastRecipe.Infrastructure.Mappers.Implementations
             return new User(dto.Name);
         }
 
-        public UserDTO MapEntityToDTO(User dto)
+        public UserDTO MapEntityToDTO(User entity)
         {
-            throw new NotImplementedException();
+            return new UserDTO
+            {
+                Name = entity.Name,
+                RegistrationDate = entity.RegistrationDate
+            };
         }
     }
 }

@@ -6,6 +6,7 @@ namespace FastRecipe.Domain.AggregatesModel.UserAggregate
     public class UserDTO
     {
         public string Name { get; set; }
-        public string RegistrationDate { get; private set; }
+        
+        public DateTime RegistrationDate;
     }
 }

@@ -4,6 +4,7 @@ using FastRecipe.Domain.AggregatesModel.UserAggregate;
 using FastRecipe.Domain.SeedWork;
 using FastRecipe.Infrastructure.Mappers.Implementations;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
+using FastRecipe.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,10 +15,10 @@ namespace FastRecipe.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IGenericRepository<User> _repository;
-        private IMapper<UserDTO, User> _mapper;
+        private readonly UsersRepository _repository;
+        private MapperUser _mapper;
 
-        public UsersController(IGenericRepository<User> repository, MapperUser mapper)
+        public UsersController(UsersRepository repository, MapperUser mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,9 +30,12 @@ namespace FastRecipe.API.Controllers
             try
             {
                 var user = _mapper.MapDTOToEntity(userDto);
-                await _repository.InsertAsync(user).ConfigureAwait(false);
+                var result = await _repository.InsertAsync(user).ConfigureAwait(false);
 
-                return Ok();
+                if (result)
+                    return Ok();
+                else
+                    return BadRequest();
             }
             catch (Exception ex)
             {
@@ -40,9 +44,45 @@ namespace FastRecipe.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id).ConfigureAwait(false);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            try
+            {
+                var result = await _repository.GetByIdAsync(id).ConfigureAwait(false);
+                var dto = _mapper.MapEntityToDTO(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] UserDTO update)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

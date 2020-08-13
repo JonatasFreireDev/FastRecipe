@@ -20,7 +20,7 @@ namespace FastRecipe.Infrastructure.IoC
 
             #region IoC
 
-            builder.RegisterType<GenericRepository<User>>().As<IGenericRepository<User>>().WithParameter("database", GetDatabase()).SingleInstance();
+            builder.RegisterType<UsersRepository>().AsSelf().WithParameter("database", GetDatabase()).SingleInstance();
             builder.RegisterType<MapperUser>().AsSelf();
 
             #endregion

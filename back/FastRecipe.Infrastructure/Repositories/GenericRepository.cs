@@ -8,42 +8,62 @@ namespace FastRecipe.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class, IAggregateRoot
     {
-        private IMongoCollection<T> _collection;
+        private IMongoCollection<T> _collection { get; set; }
 
-        public GenericRepository(IMongoDatabase database)
+        public GenericRepository(IMongoDatabase database, string databaseName)
         {
             if (database == null) throw new ArgumentNullException(nameof(database), "Database were not informed");
-            _collection = database.GetCollection<T>(typeof(T).Name);
+            _collection = database.GetCollection<T>(databaseName);
         }
 
-        public async Task<bool> DeleteAsync(string id)
+        public virtual async Task<bool> DeleteAsync(string id)
         {
             var result = await _collection.DeleteOneAsync(x => x._id == id).ConfigureAwait(false);
 
             return result.IsAcknowledged;
         }
 
-        public Task<T> GetByIdAsync(string id)
+        public virtual async Task<T> GetByIdAsync(string id)
+        {
+            var result = await _collection.FindAsync(x => x._id == id, new FindOptions<T>
+            {
+                Limit = 1
+            }).ConfigureAwait(false);
+
+            return result.First();
+        }
+
+        public virtual Task<IEnumerable<T>> GetWithPagingAsync(int page, int itemsPerPage)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<T>> GetWithPagingAsync(int page, int itemsPerPage)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> InsertAsync(T obj)
+        public virtual async Task<bool> InsertAsync(T obj)
         {
             return await _collection.InsertOneAsync(obj).ContinueWith((task) =>
             {
-                return task.Status == TaskStatus.RanToCompletion;
+                if (task.Status == TaskStatus.RanToCompletion)
+                    return true;
+                else if (task.IsFaulted)
+                    throw new TaskSchedulerException(task.Exception.Message, task.Exception);
+                else
+                    return false;
+
             }, TaskScheduler.Default).ConfigureAwait(false);
         }
 
-        public Task<bool> UpdateAsync(T obj)
+        public virtual async Task<bool> UpdateAsync(T obj, UpdateDefinition<T> update)
         {
-            throw new NotImplementedException();
+            var result = await _collection.FindOneAndUpdateAsync<T>(x => x._id == obj._id,
+                update,
+                new FindOneAndUpdateOptions<T>
+                {
+                    IsUpsert = false,
+                    ReturnDocument = ReturnDocument.After,
+                    BypassDocumentValidation = false
+                }).ConfigureAwait(false);
+
+            return (result == null) == false;
         }
     }
 }
