@@ -1,6 +1,9 @@
-﻿namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
+﻿using FastRecipe.Domain.SeedWork;
+using System.Collections.Generic;
+
+namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
 {
-    public class RecipeItem
+    public class RecipeItem : ValueObject
     {
         public int Quantity { get; private set; }
         public string Name { get; private set; }
@@ -9,6 +12,12 @@
         {
             Quantity = quantity;
             Name = name;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Quantity;
+            yield return Name;
         }
     }
 }
