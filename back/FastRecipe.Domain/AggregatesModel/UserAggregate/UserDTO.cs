@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace FastRecipe.Domain.AggregatesModel.UserAggregate
 {
@@ -6,7 +7,9 @@ namespace FastRecipe.Domain.AggregatesModel.UserAggregate
     public class UserDTO
     {
         public string Name { get; set; }
-        
-        public DateTime RegistrationDate;
+
+        public string? Id { get; set; }
+
+        public DateTime? RegistrationDate { get; set; }
     }
 }

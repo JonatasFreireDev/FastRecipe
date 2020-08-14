@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FastRecipe.Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class, IAggregateRoot
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, IAggregateRoot
     {
         private IMongoCollection<T> _collection { get; set; }
 
@@ -44,26 +44,24 @@ namespace FastRecipe.Infrastructure.Repositories
             {
                 if (task.Status == TaskStatus.RanToCompletion)
                     return true;
+
                 else if (task.IsFaulted)
                     throw new TaskSchedulerException(task.Exception.Message, task.Exception);
+
                 else
                     return false;
 
             }, TaskScheduler.Default).ConfigureAwait(false);
         }
 
-        public virtual async Task<bool> UpdateAsync(T obj, UpdateDefinition<T> update)
+        public virtual async Task<bool> UpdateAsync(string id, UpdateDefinition<T> update)
         {
-            var result = await _collection.FindOneAndUpdateAsync<T>(x => x._id == obj._id,
+            var result = await _collection.UpdateOneAsync(
+                x => x._id == id,
                 update,
-                new FindOneAndUpdateOptions<T>
-                {
-                    IsUpsert = false,
-                    ReturnDocument = ReturnDocument.After,
-                    BypassDocumentValidation = false
-                }).ConfigureAwait(false);
+                new UpdateOptions { IsUpsert = false, BypassDocumentValidation = false }).ConfigureAwait(false);
 
-            return (result == null) == false;
+            return result.IsAcknowledged;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FastRecipe.Domain.SeedWork;
 using FastRecipe.Infrastructure.Mappers.Implementations;
+using FastRecipe.Infrastructure.Mappers.Interfaces;
 
 namespace FastRecipe.Infrastructure.IoC
 {
@@ -20,8 +21,8 @@ namespace FastRecipe.Infrastructure.IoC
 
             #region IoC
 
-            builder.RegisterType<UsersRepository>().AsSelf().WithParameter("database", GetDatabase()).SingleInstance();
-            builder.RegisterType<MapperUser>().AsSelf();
+            builder.RegisterType<UsersRepository>().As<IGenericRepository<User>>().WithParameter("database", GetDatabase()).SingleInstance();
+            builder.RegisterType<MapperUser>().As<IMapper<UserDTO, User>>();
 
             #endregion
         }

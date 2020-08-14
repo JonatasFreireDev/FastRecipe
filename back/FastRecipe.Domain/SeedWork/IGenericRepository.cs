@@ -9,7 +9,7 @@ namespace FastRecipe.Domain.SeedWork
         Task<IEnumerable<T>> GetWithPagingAsync(int page, int itemsPerPage);
         Task<T> GetByIdAsync(string id);
         Task<bool> InsertAsync(T obj);
-        Task<bool> UpdateAsync(T obj, UpdateDefinition<T> update);
+        Task<bool> UpdateAsync(string id, UpdateDefinition<T> update);
         Task<bool> DeleteAsync(string id);
     }
 }
