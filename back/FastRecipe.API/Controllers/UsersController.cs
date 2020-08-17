@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Buffers;
-using System.Buffers.Text;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FastRecipe.Domain.AggregatesModel.UserAggregate;
 using FastRecipe.Domain.SeedWork;
-using FastRecipe.Infrastructure.Mappers.Implementations;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
-using FastRecipe.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.IO;
 using MongoDB.Driver;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -81,7 +73,7 @@ namespace FastRecipe.API.Controllers
             }
         }
 
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] UserDTO dto)
         {
             try
@@ -101,26 +93,24 @@ namespace FastRecipe.API.Controllers
 
         private async Task<UpdateDefinition<User>> CreateUpdate(UserDTO dto)
         {
-            var update = Builders<User>.Update;
-
             if (string.IsNullOrWhiteSpace(dto.Id))
                 throw new ArgumentNullException(nameof(dto.Id), $"Field cannot be null or empty");
 
-            var listOfUpdates = await GetUserAndCreateUpdatePerField(dto, update).ConfigureAwait(false);
+            var user = await _repository.GetByIdAsync(dto.Id).ConfigureAwait(false);
+            var listOfUpdates = GetUserAndCreateUpdatePerField(dto, user);
 
-            return update.Combine(listOfUpdates);
+            return Builders<User>.Update.Combine(listOfUpdates);
         }
 
-        private async Task<List<UpdateDefinition<User>>> GetUserAndCreateUpdatePerField(UserDTO dto, UpdateDefinitionBuilder<User> update)
+        private static List<UpdateDefinition<User>> GetUserAndCreateUpdatePerField(UserDTO dto, User user)
         {
-            var listToReturn = new List<UpdateDefinition<User>>();
-
-            var user = await _repository.GetByIdAsync(dto.Id).ConfigureAwait(false);
+            var update = Builders<User>.Update;
+            var listOfUpdates = new List<UpdateDefinition<User>>();
 
             if (user.Name != dto.Name && string.IsNullOrWhiteSpace(dto.Name) == false)
-                listToReturn.Add(update.Set(p => p.Name, dto.Name));
+                listOfUpdates.Add(update.Set(p => p.Name, dto.Name));
 
-            return listToReturn;
+            return listOfUpdates;
         }
     }
 }
