@@ -11,7 +11,6 @@ using MongoDB.Driver;
 
 namespace FastRecipe.API.Controllers
 {
-    [Route("v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -24,7 +23,7 @@ namespace FastRecipe.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Insert([FromBody] UserDTO userDto)
         {
             try
@@ -73,7 +72,7 @@ namespace FastRecipe.API.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("")]
         public async Task<IActionResult> Update([FromBody] UserDTO dto)
         {
             try

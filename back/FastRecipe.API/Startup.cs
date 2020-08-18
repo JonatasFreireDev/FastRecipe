@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using FastRecipe.API.Configurations;
 
 namespace FastRecipe.API
 {
@@ -22,7 +23,11 @@ namespace FastRecipe.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(controllers => 
+            {
+                controllers.Conventions.Add(new DefaultApplicationRouteConvention());
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FastRecipe API", Version = "v1" });
