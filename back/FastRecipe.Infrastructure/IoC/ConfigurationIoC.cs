@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
+using FastRecipe.Domain.SeedWork;
+using FastRecipe.Infrastructure.Mappers.Implementations;
+using FastRecipe.Infrastructure.Mappers.Interfaces;
 
 namespace FastRecipe.Infrastructure.IoC
 {
@@ -18,7 +21,8 @@ namespace FastRecipe.Infrastructure.IoC
 
             #region IoC
 
-            builder.RegisterType<UserRepository>().As<IUserRepository>().WithParameter("database", GetDatabase()).SingleInstance();
+            builder.RegisterType<UsersRepository>().As<IGenericRepository<User>>().WithParameter("database", GetDatabase()).SingleInstance();
+            builder.RegisterType<MapperUser>().As<IMapper<UserDTO, User>>();
 
             #endregion
         }
