@@ -15,7 +15,7 @@ namespace FastRecipe.Infrastructure.Mappers.Implementations
         {
             return new UserDTO
             {
-                Id = entity._id,
+                Id = entity._id.ToString(),
                 Name = entity.Name,
                 RegistrationDate = entity.RegistrationDate
             };

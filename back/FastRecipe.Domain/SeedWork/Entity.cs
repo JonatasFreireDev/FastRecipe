@@ -1,7 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Text.Json.Serialization;
 
 namespace FastRecipe.Domain.SeedWork
 {
@@ -11,8 +10,13 @@ namespace FastRecipe.Domain.SeedWork
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        [JsonIgnore]
-        public string _id { get; protected set; }
+        public ObjectId _id { get; protected set; }
+
+        #region Constructors
+
+        protected Entity(ObjectId id) { _id = id; }
+
+        #endregion
 
         public bool IsTransient() 
             => _id == default;
@@ -46,7 +50,7 @@ namespace FastRecipe.Domain.SeedWork
             if (IsTransient() == false)
             {
                 if (_requestedHashCode.HasValue == false)
-                    _requestedHashCode = _id.GetHashCode(StringComparison.Ordinal) ^ 31;
+                    _requestedHashCode = _id.GetHashCode() ^ 31;
             }
 
             return _requestedHashCode.Value;

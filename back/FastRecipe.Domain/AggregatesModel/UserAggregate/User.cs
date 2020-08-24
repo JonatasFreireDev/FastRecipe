@@ -1,4 +1,5 @@
 ﻿using FastRecipe.Domain.SeedWork;
+using MongoDB.Bson;
 using System;
 
 namespace FastRecipe.Domain.AggregatesModel.UserAggregate
@@ -8,11 +9,19 @@ namespace FastRecipe.Domain.AggregatesModel.UserAggregate
         public string Name { get; private set; }
         public DateTime RegistrationDate { get; private set; }
 
-        public User(string name)
+        #region Constructors
+
+        public User(ObjectId id, string name, DateTime regDate)
+            : base(id)
         {
             Name = ValidateName(name);
-            RegistrationDate = DateTime.Now;
+            RegistrationDate = regDate;
         }
+
+        public User(string name)
+            : this(ObjectId.GenerateNewId(), name, DateTime.Now) { }
+
+        #endregion
 
         private static string ValidateName(string name)
         {

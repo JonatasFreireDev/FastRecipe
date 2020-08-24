@@ -6,6 +6,6 @@ namespace FastRecipe.Domain.SeedWork
 {
     public interface IAggregateRoot
     {
-        public string _id { get; }
+        public ObjectId _id { get; }
     }
 }

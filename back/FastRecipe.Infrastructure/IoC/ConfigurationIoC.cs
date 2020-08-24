@@ -8,12 +8,24 @@ using System.Linq;
 using FastRecipe.Domain.SeedWork;
 using FastRecipe.Infrastructure.Mappers.Implementations;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
+using FastRecipe.Domain.AggregatesModel.RecipeAggregate;
 
 namespace FastRecipe.Infrastructure.IoC
 {
     public static class ConfigurationIoC
     {
+        private static IMongoDatabase database;
+
         private static IEnumerable<IConfigurationSection> _configurationsSections { get; set; }
+        private static IMongoDatabase Database 
+        {
+            get {
+                if (database is null)
+                    database = GetDatabase();
+
+                return database;
+            }
+        }
 
         public static void Load(ContainerBuilder builder, IEnumerable<IConfigurationSection> sections)
         {
@@ -21,8 +33,10 @@ namespace FastRecipe.Infrastructure.IoC
 
             #region IoC
 
-            builder.RegisterType<UsersRepository>().As<IGenericRepository<User>>().WithParameter("database", GetDatabase()).SingleInstance();
+            builder.RegisterType<UsersRepository>().As<IGenericRepository<User>>().WithParameter("database", Database).SingleInstance();
+            builder.RegisterType<RecipeRepository>().As<IGenericRepository<Recipe>>().WithParameter("database", Database).SingleInstance();
             builder.RegisterType<MapperUser>().As<IMapper<UserDTO, User>>();
+            builder.RegisterType<MapperRecipe>().As<IMapper<RecipeDTO, Recipe>>();
 
             #endregion
         }

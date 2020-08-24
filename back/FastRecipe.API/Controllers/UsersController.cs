@@ -7,8 +7,6 @@ using FastRecipe.Infrastructure.Mappers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace FastRecipe.API.Controllers
 {
     [ApiController]

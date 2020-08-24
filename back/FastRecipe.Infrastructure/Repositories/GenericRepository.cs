@@ -1,4 +1,5 @@
 ﻿using FastRecipe.Domain.SeedWork;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,16 @@ namespace FastRecipe.Infrastructure.Repositories
 
         public virtual async Task<bool> DeleteAsync(string id)
         {
-            var result = await _collection.DeleteOneAsync(x => x._id == id).ConfigureAwait(false);
+            var parsedId = ObjectId.Parse(id);
+            var result = await _collection.DeleteOneAsync(x => x._id == parsedId).ConfigureAwait(false);
 
             return result.IsAcknowledged;
         }
 
         public virtual async Task<T> GetByIdAsync(string id)
         {
-            var result = await _collection.FindAsync(x => x._id == id, new FindOptions<T>
+            var parsedId = ObjectId.Parse(id);
+            var result = await _collection.FindAsync(x => x._id == parsedId, new FindOptions<T>
             {
                 Limit = 1
             }).ConfigureAwait(false);
@@ -56,8 +59,9 @@ namespace FastRecipe.Infrastructure.Repositories
 
         public virtual async Task<bool> UpdateAsync(string id, UpdateDefinition<T> update)
         {
+            var parsedId = ObjectId.Parse(id);
             var result = await _collection.UpdateOneAsync(
-                x => x._id == id,
+                x => x._id == parsedId,
                 update,
                 new UpdateOptions { IsUpsert = false, BypassDocumentValidation = false }).ConfigureAwait(false);
 
