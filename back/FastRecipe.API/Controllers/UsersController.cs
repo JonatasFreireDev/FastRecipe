@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using FastRecipe.Domain.AggregatesModel.UserAggregate;
+﻿using FastRecipe.Domain.AggregatesModel.UserAggregate;
 using FastRecipe.Domain.SeedWork;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FastRecipe.API.Controllers
 {

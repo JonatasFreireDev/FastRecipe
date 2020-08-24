@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace FastRecipe.Domain.SeedWork
 {
@@ -14,11 +13,14 @@ namespace FastRecipe.Domain.SeedWork
 
         #region Constructors
 
-        protected Entity(ObjectId id) { _id = id; }
+        protected Entity(ObjectId id)
+        {
+            _id = id;
+        }
 
-        #endregion
+        #endregion Constructors
 
-        public bool IsTransient() 
+        public bool IsTransient()
             => _id == default;
 
         public override bool Equals(object obj)

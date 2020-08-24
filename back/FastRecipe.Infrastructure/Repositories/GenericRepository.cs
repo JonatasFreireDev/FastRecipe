@@ -47,13 +47,10 @@ namespace FastRecipe.Infrastructure.Repositories
             {
                 if (task.Status == TaskStatus.RanToCompletion)
                     return true;
-
                 else if (task.IsFaulted)
                     throw new TaskSchedulerException(task.Exception.Message, task.Exception);
-
                 else
                     return false;
-
             }, TaskScheduler.Default).ConfigureAwait(false);
         }
 

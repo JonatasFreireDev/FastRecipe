@@ -21,7 +21,7 @@ namespace FastRecipe.Domain.AggregatesModel.UserAggregate
         public User(string name)
             : this(ObjectId.GenerateNewId(), name, DateTime.Now) { }
 
-        #endregion
+        #endregion Constructors
 
         private static string ValidateName(string name)
         {

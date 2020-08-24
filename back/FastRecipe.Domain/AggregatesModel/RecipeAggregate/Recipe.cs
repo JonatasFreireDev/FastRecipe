@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
 {
@@ -31,7 +30,7 @@ namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
         public Recipe(string userId, string title, string description, List<RecipeItem> items)
             : this(ObjectId.GenerateNewId(), userId, title, description, DateTime.Now, items) { }
 
-        #endregion
+        #endregion Constructors
 
         public void AddRecipeItem(int qtd, string name)
         {

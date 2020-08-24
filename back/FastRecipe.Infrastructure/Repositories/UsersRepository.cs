@@ -5,6 +5,8 @@ namespace FastRecipe.Infrastructure.Repositories
 {
     public class UsersRepository : GenericRepository<User>
     {
-        public UsersRepository(IMongoDatabase database) : base(database, "Users") { }
+        public UsersRepository(IMongoDatabase database) : base(database, "Users")
+        {
+        }
     }
 }

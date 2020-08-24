@@ -1,6 +1,5 @@
 ﻿using FastRecipe.Domain.AggregatesModel.UserAggregate;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
-using System;
 
 namespace FastRecipe.Infrastructure.Mappers.Implementations
 {

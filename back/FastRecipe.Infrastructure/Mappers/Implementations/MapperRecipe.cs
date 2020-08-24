@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FastRecipe.Domain.AggregatesModel.RecipeAggregate;
+﻿using FastRecipe.Domain.AggregatesModel.RecipeAggregate;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
+using System;
 
 namespace FastRecipe.Infrastructure.Mappers.Implementations
 {

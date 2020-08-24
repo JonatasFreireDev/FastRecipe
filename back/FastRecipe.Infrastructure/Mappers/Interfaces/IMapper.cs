@@ -7,6 +7,7 @@ namespace FastRecipe.Infrastructure.Mappers.Interfaces
         where TEntityObject : Entity
     {
         TEntityObject MapDTOToEntity(TDataObject dto);
+
         TDataObject MapEntityToDTO(TEntityObject dto);
     }
 }

@@ -15,7 +15,7 @@ namespace FastRecipe.API.Configurations
             _ConstraintDefaultVersion = "v1";
             _versionedControllerTemplate = $"{_ConstraintRoutePrefix}/{_ConstraintDefaultVersion}/[controller]";
         }
-        
+
         public void Apply(ApplicationModel application)
         {
             if (application is null) throw new ArgumentNullException(nameof(application), "Parameter were not loaded correctly");

@@ -1,14 +1,14 @@
 ﻿using Autofac;
-using FastRecipe.Infrastructure.Repositories;
+using FastRecipe.Domain.AggregatesModel.RecipeAggregate;
 using FastRecipe.Domain.AggregatesModel.UserAggregate;
+using FastRecipe.Domain.SeedWork;
+using FastRecipe.Infrastructure.Mappers.Implementations;
+using FastRecipe.Infrastructure.Mappers.Interfaces;
+using FastRecipe.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using FastRecipe.Domain.SeedWork;
-using FastRecipe.Infrastructure.Mappers.Implementations;
-using FastRecipe.Infrastructure.Mappers.Interfaces;
-using FastRecipe.Domain.AggregatesModel.RecipeAggregate;
 
 namespace FastRecipe.Infrastructure.IoC
 {
@@ -17,9 +17,11 @@ namespace FastRecipe.Infrastructure.IoC
         private static IMongoDatabase database;
 
         private static IEnumerable<IConfigurationSection> _configurationsSections { get; set; }
-        private static IMongoDatabase Database 
+
+        private static IMongoDatabase Database
         {
-            get {
+            get
+            {
                 if (database is null)
                     database = GetDatabase();
 
@@ -38,7 +40,7 @@ namespace FastRecipe.Infrastructure.IoC
             builder.RegisterType<MapperUser>().As<IMapper<UserDTO, User>>();
             builder.RegisterType<MapperRecipe>().As<IMapper<RecipeDTO, Recipe>>();
 
-            #endregion
+            #endregion IoC
         }
 
         private static IMongoDatabase GetDatabase()
