@@ -8,6 +8,6 @@ namespace FastRecipe.Infrastructure.Mappers.Interfaces
     {
         TEntityObject MapDTOToEntity(TDataObject dto);
 
-        TDataObject MapEntityToDTO(TEntityObject dto);
+        TDataObject MapEntityToDTO(TEntityObject entity);
     }
 }

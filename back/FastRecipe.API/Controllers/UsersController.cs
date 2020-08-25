@@ -55,7 +55,7 @@ namespace FastRecipe.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {

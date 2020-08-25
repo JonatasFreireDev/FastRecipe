@@ -5,8 +5,13 @@ namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
 {
     public class RecipeItem : ValueObject
     {
-        public int Quantity { get; private set; }
-        public string Name { get; private set; }
+        public int Quantity { get; set; }
+        public string Name { get; set; }
+
+        //Parameterless constructor need for serialization/deserialization
+        public RecipeItem()
+        {
+        }
 
         public RecipeItem(int quantity, string name)
         {

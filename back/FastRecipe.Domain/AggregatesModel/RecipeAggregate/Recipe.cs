@@ -2,18 +2,20 @@
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace FastRecipe.Domain.AggregatesModel.RecipeAggregate
 {
     public class Recipe : Entity
     {
-        private readonly List<RecipeItem> _items;
+        private List<RecipeItem> _items;
 
         public string UserId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime RegistrationDate { get; private set; }
-        public IReadOnlyCollection<RecipeItem> Items => _items;
+        public List<RecipeItem> Items { get => ImmutableList<RecipeItem>.Empty.AddRange(_items).ToList(); private set => _items = value; }
 
         #region Constructors
 

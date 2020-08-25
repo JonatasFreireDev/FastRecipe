@@ -8,12 +8,20 @@ namespace FastRecipe.Infrastructure.Mappers.Implementations
     {
         public Recipe MapDTOToEntity(RecipeDTO dto)
         {
-            throw new NotImplementedException();
+            return new Recipe(dto.UserId, dto.Title, dto.Description, dto.Items);
         }
 
-        public RecipeDTO MapEntityToDTO(Recipe dto)
+        public RecipeDTO MapEntityToDTO(Recipe entity)
         {
-            throw new NotImplementedException();
+            return new RecipeDTO
+            {
+                Description = entity.Description,
+                Id = entity._id.ToString(),
+                Items = entity.Items,
+                RegistrationDate = entity.RegistrationDate,
+                Title = entity.Title,
+                UserId = entity.UserId
+            };
         }
     }
 }

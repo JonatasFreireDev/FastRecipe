@@ -2,6 +2,7 @@
 using FastRecipe.Domain.SeedWork;
 using FastRecipe.Infrastructure.Mappers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace FastRecipe.API.Controllers
@@ -19,15 +20,38 @@ namespace FastRecipe.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            return Ok();
+            try
+            {
+                var entity = await _repository.GetByIdAsync(id).ConfigureAwait(false);
+                var dto = _mapper.MapEntityToDTO(entity);
+
+                return Ok(dto);
+            }
+            catch (Exception Ex)
+            {
+                return BadRequest(Ex.Message);
+            }
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> Insert([FromBody] RecipeDTO dto)
+        public async Task<IActionResult> Insert([FromBody] RecipeDTO recipeDto)
         {
-            return Ok(dto);
+            try
+            {
+                var recipe = _mapper.MapDTOToEntity(recipeDto);
+                var result = await _repository.InsertAsync(recipe).ConfigureAwait(false);
+
+                if (result)
+                    return Ok();
+                else
+                    return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
